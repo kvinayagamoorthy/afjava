@@ -1,0 +1,21 @@
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# Tool caches / reports outside target
+.pitest/
+dependency-check-data/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+
+# Claude Code local settings
+.claude/settings.local.json
