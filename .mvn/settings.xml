@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Project-scoped Maven settings. Activated by .mvn/maven.config (-s).
+  Replaces ~/.m2/settings.xml for this repo only, so the build resolves from
+  Maven Central and does not depend on any corporate mirror or VPN.
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
+  <interactiveMode>false</interactiveMode>
+</settings>

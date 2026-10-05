@@ -24,3 +24,27 @@ bottom. Format: context → decision → consequence.
   repository with in-memory + LDAP implementations.
 - **Consequence:** find-sec-bugs gets LDAP injection + XXE; Testcontainers gets OpenLDAP; PIT
   gets parser edge cases; ArchUnit gets layers.
+
+## D004 — Project-scoped Maven settings (2026-10-05)
+
+- **Context:** `~/.m2/settings.xml` mirrors `central` to a corporate Artifactory that is
+  unreachable off VPN. This is a personal/public repo.
+- **Decision:** `.mvn/maven.config` passes `--settings .mvn/settings.xml` (minimal, no mirrors).
+- **Consequence:** Builds resolve from Maven Central anywhere. Global settings untouched.
+  Local repository `~/.m2/repository` still shared.
+
+## D005 — javac `-Xlint:all` + `failOnWarning` as first gate (2026-10-05)
+
+- **Context:** Compiler warnings are free and have no false positives so far.
+- **Decision:** Parent POM enables all lint categories and fails on any warning, controlled by
+  property `afjava.failOnWarning` (labs set it `false`).
+- **Consequence:** Suppressions must be narrow (`@SuppressWarnings` on a local variable) with a
+  comment saying why.
+
+## D006 — `qa/check.sh`: no `mvn -q`, filter findings instead (2026-10-05)
+
+- **Context:** `-q` hides `[WARNING]` lines, so a lint failure printed no file/line.
+- **Decision:** Capture full log; on failure print `[ERROR]/[WARNING]` lines minus Maven help
+  boilerplate. One Maven invocation per step for clear per-tool PASS/FAIL.
+- **Consequence:** ~1 s JVM startup per step. Revisit (single `verify` or mvnd) if T1 grows past
+  budget.

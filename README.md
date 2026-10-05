@@ -24,7 +24,8 @@ Requires JDK 21 and Docker (for Testcontainers lessons).
 
 ```bash
 ./qa/check.sh          # fast gates (every change)
-./qa/check.sh --full   # + mutation tests, component tests, Checker Framework
+./qa/check.sh --labs   # also build the intentionally flawed lab modules
+./qa/check.sh --full   # + mutation tests, component tests, Checker Framework (later lessons)
 ```
 
-(`qa/check.sh` arrives in lesson 00.)
+Maven runs via the wrapper (`./mvnw`); first run downloads Maven 3.9.16 from Maven Central.

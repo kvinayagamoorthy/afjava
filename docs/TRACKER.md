@@ -4,10 +4,11 @@ Legend: ⬜ not started · 🟡 in progress · ✅ done · ⏸ deferred · ❌ d
 
 ## Current focus
 
-- **Lesson:** 00 — Foundation
+- **Lesson:** 01 — JUnit 5
 - **Status:** ⬜ not started
-- **Next step:** Add Maven Wrapper, parent `pom.xml`, empty `afjava-core` module with one
-  domain class + one test, and `qa/check.sh` skeleton printing PASS/FAIL + timings.
+- **Next step:** Add JUnit 5 BOM to parent POM; write `RdnTest`; grow domain with a
+  `DistinguishedName` parser and test it with `@ParameterizedTest`, `@Nested`, `assertThrows`.
+  Create `labs/lab-01-junit5` (lifecycle, dynamic tests, tags, unit vs component split).
 - **Blockers:** none
 
 > Update this block at the end of every session. It is the single resume point.
@@ -16,7 +17,7 @@ Legend: ⬜ not started · 🟡 in progress · ✅ done · ⏸ deferred · ❌ d
 
 | # | Tool | Status | Version | Lesson doc | Lab module | Gate | Tier | Time added | Done on |
 |---|---|---|---|---|---|---|---|---|---|
-| 00 | Foundation (wrapper, parent POM, check.sh) | ⬜ | | — | — | — | — | | |
+| 00 | Foundation (wrapper, parent POM, javac lint, check.sh) | ✅ | Maven 3.9.16, compiler 3.16.0 | [00](lessons/00-foundation.md) | lab-00-javac-lint | fail | T1 | 0 (≈1.5 s total) | 2026-10-05 |
 | 01 | JUnit 5 | ⬜ | | | | | | | |
 | 02 | AssertJ | ⬜ | | | | | | | |
 | 03 | Mockito | ⬜ | | | | | | | |
@@ -65,3 +66,4 @@ Append-only, newest at bottom. One entry per working session.
 | Date | Lesson | What was done | Next |
 |---|---|---|---|
 | 2026-10-05 | — | Created plan, tracker, lesson template, CLAUDE.md, README, .gitignore | Start lesson 00 |
+| 2026-10-05 | 00 | Wrapper, project-scoped settings, parent POM (pinned plugins), core `Rdn`, javac `-Xlint:all` + `failOnWarning` gate, lab-00, `qa/check.sh` | Lesson 01 |

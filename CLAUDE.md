@@ -8,7 +8,7 @@ specifics; skip generic programming basics.
 
 1. Read `docs/TRACKER.md` → **Current focus**. That is the resume point.
 2. Read the current lesson doc in `docs/lessons/` → unchecked *Done criteria* = remaining work.
-3. Run `./qa/check.sh` (once it exists) to confirm the tree is green before changing anything.
+3. Run `./qa/check.sh` to confirm the tree is green before changing anything.
 
 ## End of every session / lesson step
 
@@ -27,14 +27,14 @@ specifics; skip generic programming basics.
   unless the lesson step is the fix step; keep bad and good variants side by side.
 - **Never invent tool output.** Lesson docs quote real output captured by running the tool here.
 - Pin every tool/library version as a property in the parent `pom.xml`; record it in the tracker.
-- Use the Maven Wrapper (`./mvnw`), not system `mvn`, once it exists.
+- Use the Maven Wrapper (`./mvnw`), not system `mvn`.
 - Measure, don't guess: time added to `./qa/check.sh` gets recorded per tool.
 - Lesson docs follow `docs/lessons/_TEMPLATE.md`. Include a Python analog where one exists
   (owner's Python setup: ruff, pylint, mypy, bandit, radon, cohesion, tach, vulture, pytest).
 
 ## Layout
 
-- `pom.xml` — parent: versions, pluginManagement, profiles (`labs`, `full`)
+- `pom.xml` — parent: versions, pluginManagement, profiles (`labs`; `full` added in later lessons)
 - `afjava-core/` — sample identity-directory domain, always green
 - `labs/` — per-tool sandboxes (excluded from default build)
 - `config/` — shared tool configs (checkstyle, pmd, spotbugs, dependency-check, gitleaks)
@@ -43,4 +43,8 @@ specifics; skip generic programming basics.
 
 ## Tech
 
-JDK 21, Maven 3.9 (wrapper). Docker available for Testcontainers.
+JDK 21, Maven 3.9.16 via `./mvnw`. Docker available for Testcontainers.
+`.mvn/maven.config` forces project-scoped `.mvn/settings.xml` (Maven Central, no corporate
+mirror) — don't remove it. groupId `io.github.kvinayagamoorthy`, base package
+`io.github.kvinayagamoorthy.afjava`. Labs get `afjava.failOnWarning=false` from `labs/pom.xml`.
+Pick plugin versions from Maven Central: newest non-beta 3.x (`<release>` may be a Maven-4 beta).
