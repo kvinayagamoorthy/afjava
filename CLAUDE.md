@@ -17,6 +17,21 @@ specifics; skip generic programming basics.
 - Log any gate/config/rule decision in `docs/DECISIONS.md`.
 - Tick completed boxes in the lesson doc.
 
+## How to teach (read docs/LEARNING-PRINCIPLES.md)
+
+Owner learns from concrete things first (Bret Victor: data, state, flow, time, concrete before
+abstract; Peter Senge: learn by acting and seeing consequences within the learning horizon).
+- Every lesson opens with **"Try it yourself"**: copy-paste commands run from repo root, each
+  with expected PASS/FAIL + the key output line, what to look at, and an undo command if it
+  edits tracked files. **See it fail first, then see it pass.** Run every command before
+  documenting it.
+- Explain mechanism and config only *after* the experiments.
+- Make invisible state/flow visible: jshell sessions, lifecycle prints, reports, traces,
+  `diff <(before) <(after)`. Offer the fastest feedback loop for each experiment.
+- Use meaningful identity data (`cn=admin,ou=sales,o=acme`), never foo/bar.
+- Turn surprises into experiments. Simulate long-horizon payoffs (CVEs, old secrets, weak
+  tests) inside the lab so the consequence is visible now.
+
 ## Rules
 
 - **One tool at a time.** Do not wire in tools from later lessons early.
@@ -39,6 +54,7 @@ specifics; skip generic programming basics.
 - `labs/` — per-tool sandboxes (excluded from default build)
 - `config/` — shared tool configs (checkstyle, pmd, spotbugs, dependency-check, gitleaks)
 - `qa/check.sh` — sanity runner, PASS/FAIL + timing per step; `--full` for slow tier
+- `docs/LEARNING-PRINCIPLES.md` — how lessons are designed (concrete first, immediate feedback)
 - `docs/00-plan.md` — plan and rationale; `docs/TRACKER.md` — status; `docs/DECISIONS.md` — ADR log
 
 ## Tech

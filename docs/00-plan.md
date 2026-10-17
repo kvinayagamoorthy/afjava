@@ -27,6 +27,8 @@ Status lives in [TRACKER.md](TRACKER.md). This file is the *what* and *why*; the
 | Antifragile (Taleb) | Tools that stress code with variation — mutation testing, property-based testing, fuzzing — are first-class, not extras. Every bug found later should become a new rule or test (system gains from stressors). |
 | Skin in the game | A gate that fails the build is real; a report nobody reads is not. Each lesson ends with an explicit gate decision: **fail**, **warn**, or **drop**. |
 | No fabricated knowledge | Lesson docs quote **real captured tool output** from this repo, not invented examples. |
+| Immediate connection (Bret Victor) | Every lesson opens with copy-paste experiments: see it fail, then pass, within seconds. Data, state and flow made visible. Concrete before abstract. See [LEARNING-PRINCIPLES.md](LEARNING-PRINCIPLES.md). |
+| Learning horizon (Peter Senge) | Quality tools pay off months later, beyond the horizon where we learn from experience. Labs pull the consequence in: plant the defect, watch the tool catch it now. |
 
 ## 3. Tech baseline
 
@@ -146,17 +148,20 @@ per lesson.
 
 Every lesson follows [lessons/_TEMPLATE.md](lessons/_TEMPLATE.md):
 
-1. **Read** — what it catches, how it works (source / bytecode / runtime), Python analog.
-2. **Lab** — create `labs/lab-NN-<tool>` with flawed code; run tool; capture real output.
+1. **Lab** — create `labs/lab-NN-<tool>` with flawed code; run tool; capture real output.
+2. **Try it** — write the "Try it yourself" experiments (fail first, then pass, break-it,
+   interactive poke); run each one here before documenting it.
 3. **Fix** — fix findings; see the tool go green.
-4. **Tune** — try config knobs, suppressions, one false positive and how to silence it narrowly.
-5. **Wire** — add tool to parent POM + `afjava-core` + `qa/check.sh` with a gate decision.
-6. **Measure** — record runtime added to `./qa/check.sh` and noise level.
-7. **Write** — finish `docs/lessons/NN-<tool>.md` incl. cheat sheet.
-8. **Track** — update TRACKER.md (status, versions, timings, next step); log decisions in
+4. **Explain** — only now: what it catches, how it works (source / bytecode / runtime), Python
+   analog.
+5. **Tune** — try config knobs, suppressions, one false positive and how to silence it narrowly.
+6. **Wire** — add tool to parent POM + `afjava-core` + `qa/check.sh` with a gate decision.
+7. **Measure** — record runtime added to `./qa/check.sh` and noise level.
+8. **Write** — finish `docs/lessons/NN-<tool>.md` incl. cheat sheet.
+9. **Track** — update TRACKER.md (status, versions, timings, next step); log decisions in
    DECISIONS.md; commit.
 
-A lesson is ✅ only when all eight are done and `./qa/check.sh` is green.
+A lesson is ✅ only when all nine are done and `./qa/check.sh` is green.
 
 ## 8. Resume protocol
 

@@ -48,3 +48,14 @@ bottom. Format: context → decision → consequence.
   boilerplate. One Maven invocation per step for clear per-tool PASS/FAIL.
 - **Consequence:** ~1 s JVM startup per step. Revisit (single `verify` or mvnd) if T1 grows past
   budget.
+
+## D007 — Lessons are experiment-first (2026-10-17)
+
+- **Context:** Owner learns from concrete, immediate feedback (Bret Victor, "Inventing on
+  Principle" and "Learnable Programming"; Peter Senge's learning horizon). Lesson 00 at first
+  lacked the command to *see* the gate fail; the owner had to work it out.
+- **Decision:** `docs/LEARNING-PRINCIPLES.md` added. Every lesson opens with "Try it yourself":
+  copy-paste commands, fail first then pass, expected key output, undo commands. Mechanism
+  comes after the experiments. Template reordered accordingly.
+- **Consequence:** Each experiment command is run before it is documented. Lesson 00
+  retrofitted (11 experiments, incl. the `-Werror` hidden-warning surprise and jshell).

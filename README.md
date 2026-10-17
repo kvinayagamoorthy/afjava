@@ -7,6 +7,7 @@ one tool at a time on a small identity-directory sample domain.
 Goal: find defects as far left as possible (compiler → unit tests), so very few reach QA or
 customers.
 
+- **Learning principles:** [docs/LEARNING-PRINCIPLES.md](docs/LEARNING-PRINCIPLES.md) — concrete first, immediate feedback
 - **Plan:** [docs/00-plan.md](docs/00-plan.md)
 - **Status / resume point:** [docs/TRACKER.md](docs/TRACKER.md)
 - **Decisions:** [docs/DECISIONS.md](docs/DECISIONS.md)

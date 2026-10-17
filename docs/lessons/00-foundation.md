@@ -9,6 +9,144 @@
 | **Works on** | source (javac) |
 | **Lab module** | `labs/lab-00-javac-lint` |
 
+## 0. Try it yourself
+
+Run from the repo root, in order. Every command and result below was run and checked in
+this repo.
+
+### 0.1 Lab: see it fail, then see it pass
+
+| # | Command | Expect | Look at |
+|---|---|---|---|
+| 1 | `./mvnw -Plabs -pl labs/lab-00-javac-lint -am clean compile` | **PASS** with 12 `[WARNING]` lines | Labs only report: `afjava.failOnWarning=false` from `labs/pom.xml` |
+| 2 | `./mvnw -Dafjava.failOnWarning=true -Plabs -pl labs/lab-00-javac-lint -am clean compile` | **FAIL**: `warnings found and -Werror specified` | Same code, gate switched on from the command line |
+| 3 | `javac -Xlint:all -Werror -d "$(mktemp -d)" labs/lab-00-javac-lint/src/main/java/io/github/kvinayagamoorthy/afjava/labs/javaclint/LintGoodExamples.java; echo "exit=$?"` | **PASS**: `exit=0`, no output | Fixed versions are clean |
+
+`-pl <module>` builds just that module; `-am` ("also make") also builds what it depends on
+(here the parent POMs). `-D` on the command line overrides a `<properties>` value from any POM.
+
+### 0.2 Plain javac, no Maven: fastest loop (under 1 s)
+
+Set `F` once in your shell, then run the rest:
+
+```bash
+F=labs/lab-00-javac-lint/src/main/java/io/github/kvinayagamoorthy/afjava/labs/javaclint/LintBadExamples.java
+```
+
+| # | Command | Expect | Look at |
+|---|---|---|---|
+| 4 | `javac -Xlint:all -d "$(mktemp -d)" $F` | `12 warnings`, exit 0 | Each warning names its category: `[rawtypes]`, `[fallthrough]`, ... |
+| 5 | `javac -Xlint:all,-rawtypes,-unchecked -d "$(mktemp -d)" $F` | `7 warnings` | Turning off categories: `all` then subtract with `-<key>` |
+| 6 | `javac -Xlint:all -Werror -d "$(mktemp -d)" $F; echo "exit=$?"` | **FAIL**: `1 error`, `11 warnings`, `exit=1` | **11, not 12.** See 0.3 |
+| 7 | `javac --help-lint` | List of every lint key | |
+
+### 0.3 Surprise: `-Werror` hides a warning
+
+Compare the warning lists with and without `-Werror`:
+
+```bash
+diff <(javac -Xlint:all -d "$(mktemp -d)" $F 2>&1 | grep 'warning:') \
+     <(javac -Xlint:all -Werror -d "$(mktemp -d)" $F 2>&1 | grep 'warning:')
+```
+
+Real output:
+
+```text
+12d11
+< .../LintBadExamples.java:27: warning: [fallthrough] possible fall-through into case
+```
+
+With `-Werror`, javac stopped before it reported the fall-through warning. A file containing
+*only* the fall-through bug does report it under `-Werror`:
+
+```text
+Ft.java:7: warning: [fallthrough] possible fall-through into case
+      case 1:
+      ^
+error: warnings found and -Werror specified
+1 error
+1 warning
+```
+
+So with the gate on, fixing warnings can uncover new ones. Don't assume the first failure
+list is complete; rerun after each round of fixes.
+
+### 0.4 Break the core, watch `qa/check.sh` catch it
+
+| # | Command | Expect |
+|---|---|---|
+| 8 | Run the `sed` command below the table | Adds a raw-type method to `Rdn` |
+| 9 | `./qa/check.sh` | **FAIL**: `Rdn.java:[31,19] found raw type: java.util.List` |
+| 10 | `git checkout -- afjava-core/src/main/java/io/github/kvinayagamoorthy/afjava/directory/domain/Rdn.java` | Undo |
+| 11 | `./qa/check.sh` | **PASS**: `ALL CHECKS PASSED` |
+
+Command for step 8:
+
+```bash
+sed -i 's|^  @Override|  static java.util.List raw() { return new java.util.ArrayList(); }\n\n  @Override|' \
+  afjava-core/src/main/java/io/github/kvinayagamoorthy/afjava/directory/domain/Rdn.java
+```
+
+### 0.5 See the flow: which Maven steps ran, in which order
+
+```bash
+./mvnw -B clean verify | grep -E -- '--- |Building afjava'
+```
+
+Real output:
+
+```text
+[INFO] Building afjava :: parent 0.1.0-SNAPSHOT                           [1/2]
+[INFO] --- clean:3.5.0:clean (default-clean) @ afjava-parent ---
+[INFO] Building afjava :: core 0.1.0-SNAPSHOT                             [2/2]
+[INFO] --- clean:3.5.0:clean (default-clean) @ afjava-core ---
+[INFO] --- resources:3.5.0:resources (default-resources) @ afjava-core ---
+[INFO] --- compiler:3.16.0:compile (default-compile) @ afjava-core ---
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ afjava-core ---
+[INFO] --- compiler:3.16.0:testCompile (default-testCompile) @ afjava-core ---
+[INFO] --- surefire:3.6.0:test (default-test) @ afjava-core ---
+[INFO] --- jar:3.5.1:jar (default-jar) @ afjava-core ---
+```
+
+Format: `plugin:version:goal (execution-id) @ module`. The versions are the ones pinned in the
+parent POM. Every later tool appears in this list as a new line at a specific phase; this is
+the way to see *where* in the build a tool runs.
+
+### 0.6 Poke a class interactively with jshell (no test needed)
+
+```bash
+./mvnw -q compile
+jshell --class-path afjava-core/target/classes
+```
+
+Then type, one line at a time:
+
+```java
+import io.github.kvinayagamoorthy.afjava.directory.domain.Rdn;
+new Rdn("CN", "admin")
+new Rdn("cn", "admin").equals(new Rdn("CN", "admin"))
+new Rdn("1cn", "admin")
+new Rdn("cn", "")
+/exit
+```
+
+Real output:
+
+```text
+jshell> $2 ==> cn=admin
+jshell> $3 ==> true
+jshell> |  Exception java.lang.IllegalArgumentException: invalid attribute type: '1cn'
+|        at Rdn.<init> (Rdn.java:23)
+|        at (#4:1)
+jshell> |  Exception java.lang.IllegalArgumentException: empty value for attribute type: cn
+|        at Rdn.<init> (Rdn.java:26)
+|        at (#5:1)
+```
+
+You can see the data (`cn=admin`, type lower-cased), the state (`equals` is true because the
+record compares normalised components), and where validation fails (`Rdn.java:23`). Python
+analog: `python -i` with the package on `PYTHONPATH`.
+
 ## 1. What it catches and why it matters
 
 Before adding any external tool, the compiler itself is the cheapest static analyzer you
@@ -250,16 +388,34 @@ javac lint ⊂ Error Prone (lesson 08), which runs *inside* javac and adds ~500 
 ## 10. Cheat sheet
 
 ```bash
+# See it fail (lab with gate forced on)
+./mvnw -Dafjava.failOnWarning=true -Plabs -pl labs/lab-00-javac-lint -am clean compile
+
+# See it pass / report only (lab default)
+./mvnw -Plabs -pl labs/lab-00-javac-lint -am clean compile
+
+# Fastest loop: javac directly on one file
+javac -Xlint:all -d "$(mktemp -d)" <File.java>             # report
+javac -Xlint:all -Werror -d "$(mktemp -d)" <File.java>     # gate
+javac -Xlint:all,-rawtypes -d "$(mktemp -d)" <File.java>   # minus one category
+javac --help-lint                                           # list lint keys
+
+# Whole repo
 ./qa/check.sh                       # fast gates
 ./qa/check.sh --labs                # + build labs (warnings expected, must not fail)
 ./mvnw verify                       # plain build, core only
-./mvnw -Plabs -pl labs/lab-00-javac-lint -am compile   # one lab (+ its parents)
-./mvnw -Dafjava.failOnWarning=false compile            # temporarily report-only
-javac --help-lint                   # list lint keys
+./mvnw -Dafjava.failOnWarning=false compile   # temporarily report-only
+
+# See the flow: plugin goals in execution order
+./mvnw -B clean verify | grep -E -- '--- |Building afjava'
+
+# Poke core classes interactively
+./mvnw -q compile && jshell --class-path afjava-core/target/classes
 ```
 
 ## Done criteria
 
+- [x] "Try it yourself" experiments written, each run here, fail-first, with expected output
 - [x] Read: defect class, mechanism, Python analog written up
 - [x] Lab module created; tool fires; real output captured above
 - [x] Findings fixed; tool green on lab "good" code

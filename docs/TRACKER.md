@@ -67,3 +67,4 @@ Append-only, newest at bottom. One entry per working session.
 |---|---|---|---|
 | 2026-10-05 | — | Created plan, tracker, lesson template, CLAUDE.md, README, .gitignore | Start lesson 00 |
 | 2026-10-05 | 00 | Wrapper, project-scoped settings, parent POM (pinned plugins), core `Rdn`, javac `-Xlint:all` + `failOnWarning` gate, lab-00, `qa/check.sh` | Lesson 01 |
+| 2026-10-17 | 00 | Added LEARNING-PRINCIPLES.md (Victor, Senge); experiment-first template; lesson 00 "Try it yourself" (fail/pass commands, `-Werror` hides fall-through, Maven flow, jshell) | Lesson 01 |
