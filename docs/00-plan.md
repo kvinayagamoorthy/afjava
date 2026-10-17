@@ -28,6 +28,7 @@ Status lives in [TRACKER.md](TRACKER.md). This file is the *what* and *why*; the
 | Skin in the game | A gate that fails the build is real; a report nobody reads is not. Each lesson ends with an explicit gate decision: **fail**, **warn**, or **drop**. |
 | No fabricated knowledge | Lesson docs quote **real captured tool output** from this repo, not invented examples. |
 | Immediate connection (Bret Victor) | Every lesson opens with copy-paste experiments: see it fail, then pass, within seconds. Data, state and flow made visible. Concrete before abstract. See [LEARNING-PRINCIPLES.md](LEARNING-PRINCIPLES.md). |
+| Theory building (Peter Naur) | The asset is the theory, not the text. Each lesson states the tool's theory (what it is for, why shaped so, boundaries); `THEORY.md` holds the domain's theory. |
 | Learning horizon (Peter Senge) | Quality tools pay off months later, beyond the horizon where we learn from experience. Labs pull the consequence in: plant the defect, watch the tool catch it now. |
 
 ## 3. Tech baseline

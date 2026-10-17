@@ -48,16 +48,25 @@ side (one example per important rule):
 Why the fix is correct, not just why the warning went away. Any surprise met during the
 experiments goes here as its own observation.
 
-## 3. What it catches and why it matters
+## 3. Theory of the tool (Naur)
 
-Defect class. Which real-world failure it prevents. How early in the loop it catches it. How
-this lesson pulled that normally-late consequence inside the feedback loop.
+Each answer points back to an experiment in section 1.
+
+| Question | Answer |
+|---|---|
+| **World mapping:** what real failure does this tool exist to prevent? | |
+| **Current theory:** why is it shaped this way (key design choices, defaults)? | |
+| **Similarity:** closest tool already known (Python, earlier lesson); where it differs | |
+| **Boundary:** what it cannot catch, by design | |
+| **Proof:** which experiment showed it doing its job | |
+
+How early in the loop it catches its defect class, and how this lesson pulled that
+normally-late consequence inside the feedback loop.
 
 ## 4. How it works
 
-Mechanism in a few lines (compiler plugin? bytecode analysis? instrumentation?). Implications:
-what it *cannot* see. Make hidden state/flow visible where possible (lifecycle prints, reports,
-traces).
+Mechanism in a few lines (compiler plugin? bytecode analysis? instrumentation?). Make hidden
+state/flow visible where possible (lifecycle prints, reports, traces).
 
 ## 5. Setup
 
@@ -107,7 +116,9 @@ What this tool catches that others don't, and vice versa.
 - [ ] Lab module created; tool fires; real output captured
 - [ ] Findings fixed; tool green on lab "good" code
 - [ ] State/flow of the tool made visible (report, trace, lifecycle print, jshell)
-- [ ] Defect class, mechanism, Python analog written up
+- [ ] Theory of the tool: five questions answered, each tied to an experiment
+- [ ] Domain code changed? `docs/THEORY.md` updated (world rule, invariant, boundary, proof)
+- [ ] Mechanism and Python analog written up
 - [ ] At least one knob tuned and one suppression demonstrated
 - [ ] Wired into parent POM + `afjava-core` + `qa/check.sh`
 - [ ] Runtime and noise measured

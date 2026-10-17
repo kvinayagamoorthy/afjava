@@ -29,6 +29,10 @@ abstract; Peter Senge: learn by acting and seeing consequences within the learni
 - Make invisible state/flow visible: jshell sessions, lifecycle prints, reports, traces,
   `diff <(before) <(after)`. Offer the fastest feedback loop for each experiment.
 - Use meaningful identity data (`cn=admin,ou=sales,o=acme`), never foo/bar.
+- **Theory building (Naur):** use the `programming-as-theory-building` skill for every code
+  change (answer world mapping / current theory / similarity / boundary / proof before
+  coding). Keep `docs/THEORY.md` current for `afjava-core`. Each lesson has a "Theory of the
+  tool" section. End non-trivial work with Theory / Changed / Verified / Risk.
 - Turn surprises into experiments. Simulate long-horizon payoffs (CVEs, old secrets, weak
   tests) inside the lab so the consequence is visible now.
 
@@ -54,7 +58,8 @@ abstract; Peter Senge: learn by acting and seeing consequences within the learni
 - `labs/` — per-tool sandboxes (excluded from default build)
 - `config/` — shared tool configs (checkstyle, pmd, spotbugs, dependency-check, gitleaks)
 - `qa/check.sh` — sanity runner, PASS/FAIL + timing per step; `--full` for slow tier
-- `docs/LEARNING-PRINCIPLES.md` — how lessons are designed (concrete first, immediate feedback)
+- `docs/LEARNING-PRINCIPLES.md` — how lessons are designed (concrete first, immediate feedback, Naur theory)
+- `docs/THEORY.md` — program theory of the sample domain: world rule → code, invariants, boundaries, proof
 - `docs/00-plan.md` — plan and rationale; `docs/TRACKER.md` — status; `docs/DECISIONS.md` — ADR log
 
 ## Tech

@@ -22,5 +22,6 @@
 
   <modules>
     <module>lab-00-javac-lint</module>
+    <module>lab-01-junit5</module>
   </modules>
 </project>

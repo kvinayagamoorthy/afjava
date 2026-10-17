@@ -13,4 +13,12 @@
   <artifactId>afjava-core</artifactId>
   <name>afjava :: core</name>
   <description>Mini identity directory sample domain. Every wired gate must pass.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

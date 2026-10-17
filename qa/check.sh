@@ -49,6 +49,12 @@ findings() {
         | sed "s#${REPO_ROOT}/##"
 }
 
+# test_totals <log>: Surefire's per-module totals ("Tests run: N, Failures: ..."), so a PASS
+# also shows how many tests actually ran. A step that silently runs 0 tests is visible.
+test_totals() {
+    grep -E '^\[(INFO|WARNING)\] Tests run: [0-9]+, .*Skipped: [0-9]+$' "$1" | sed 's/^\[[A-Z]*\] /    /'
+}
+
 # run_step <name> <command...>
 # Captures output; on failure prints only the findings (full log if none matched).
 run_step() {
@@ -61,6 +67,7 @@ run_step() {
     local rc=$?
     local elapsed=$(( $(now_ms) - start ))
     if [ "$rc" -eq 0 ]; then
+        test_totals "$log"
         echo -e "${GREEN}PASS${NC}: ${name} (${elapsed} ms)"
     else
         findings "$log" || cat "$log"
@@ -71,8 +78,8 @@ run_step() {
 }
 
 # ── T1: fast tier ─────────────────────────────────────────────────────────────
-# compile (javac -Xlint:all -Werror) + package for every default-build module.
-run_step "build: compile + javac lint" "${MVN[@]}" clean verify
+# compile (javac -Xlint:all -Werror) + unit tests (JUnit) + package, every default-build module.
+run_step "build: javac lint + unit tests" "${MVN[@]}" clean verify
 
 # ── T2: slow tier ─────────────────────────────────────────────────────────────
 if [ "$run_full" -eq 1 ]; then

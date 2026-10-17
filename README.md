@@ -8,6 +8,7 @@ Goal: find defects as far left as possible (compiler → unit tests), so very fe
 customers.
 
 - **Learning principles:** [docs/LEARNING-PRINCIPLES.md](docs/LEARNING-PRINCIPLES.md) — concrete first, immediate feedback
+- **Domain theory:** [docs/THEORY.md](docs/THEORY.md) — why the sample code is shaped the way it is
 - **Plan:** [docs/00-plan.md](docs/00-plan.md)
 - **Status / resume point:** [docs/TRACKER.md](docs/TRACKER.md)
 - **Decisions:** [docs/DECISIONS.md](docs/DECISIONS.md)

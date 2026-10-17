@@ -31,6 +31,23 @@ program is doing, not imagine it. The ideas used here:
 > learning horizon, it becomes impossible to learn from direct experience. Cycles are
 > particularly hard to see, and thus learn from, if they last longer than a year or two.
 
+**Peter Naur, "Programming as Theory Building" (1985).** A program's real asset is the *theory*
+held by the people who build it: how the program maps onto the real-world activity it
+supports, why it is shaped the way it is, and how it should change when the world changes.
+Code, tests and docs are evidence of that theory, not the theory itself. When the theory is
+lost, only text remains and the program is effectively dead, even if it still runs.
+
+Applied twice in this repo (operational rules come from the
+`programming-as-theory-building` Claude Code skill, used for every code change):
+
+| Applied to | Where it lives | The five questions answered |
+|---|---|---|
+| **Each tool** we learn | "Theory of the tool" section in each lesson | World mapping: what real failure does the tool exist to prevent? Current theory: why is the tool shaped this way (design choices, defaults)? Similarity: which tool we already know (Python or earlier lesson) is it most like, and where does it differ? Boundary: what can it not catch, by design? Proof: which experiment showed it doing its job? |
+| **The sample domain** (`afjava-core`) | [THEORY.md](THEORY.md) | World rule (RFC, LDAP behaviour) → class/method; invariants; boundaries (what is deliberately out of scope); proof (which tests). |
+
+Concrete first still holds: the theory section comes *after* the experiments, and every
+claim in it points back to something you ran.
+
 Quality tools are a perfect example of the learning-horizon problem: their payoff (a bug that
 never reaches a customer, a CVE that is never shipped) usually lies months or years beyond the
 horizon. So each lesson has to **pull the consequence inside the horizon**: plant the defect,
@@ -71,5 +88,8 @@ experiments, never before.
 9. **Pull long-horizon consequences in.** If a tool's value normally appears late (dependency
    CVEs, secrets in old commits, weak tests), simulate it now: pin an old vulnerable library in a
    lab, commit a fake secret to a throwaway branch, plant a bug the tests miss.
-10. **Surprises are lessons.** When a tool behaves unexpectedly (e.g. `-Werror` hiding the
+10. **Write the theory down, after the experiments.** Each lesson answers Naur's five questions
+    about its tool. Each domain change updates `docs/THEORY.md`: which world rule it
+    implements, which invariant it keeps, what is out of scope, which test proves it.
+11. **Surprises are lessons.** When a tool behaves unexpectedly (e.g. `-Werror` hiding the
     fall-through warning until the others are fixed), turn it into an experiment, not a footnote.
