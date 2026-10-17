@@ -44,6 +44,19 @@ Column meaning:
 - **Tier** — T0 pre-commit · T1 fast check · T2 full check · T3 scheduled/CI (see plan §6).
 - **Time added** — wall-clock added to `./qa/check.sh` (measured, not guessed).
 
+## Open items and ideas
+
+Things noticed along the way, not yet acted on. Move to DECISIONS.md once decided.
+
+| Raised | Item | Notes |
+|---|---|---|
+| 2026-10-17 (L01) | Labs step takes ~6.3 s, 2 s of it the deliberate `component` sleep in `TaggedTest` | Could exclude the `component` tag in the labs step; kept for now since labs are opt-in (`--labs`) |
+| 2026-10-17 (L01) | Third-party Surefire tree reporter (`me.fabriciorby`) | Check it in Dependency-Check (lesson 15); drop if it ever blocks a Surefire upgrade |
+| 2026-10-17 (L01) | One Maven invocation per `check.sh` step costs ~1 s JVM start each | Revisit (single `verify`, or mvnd) once T1 nears its 90 s budget (D006) |
+| 2026-10-17 (L01) | Value equality in `Rdn` is exact (`cn=Admin` ≠ `cn=admin`) | Deliberate boundary (THEORY.md). Schema-aware matching could be a later domain step if a lesson needs it |
+| 2026-10-17 (L01) | Random order applies to labs too | Labs tagged `order-dependent` are excluded by default, so labs stay green |
+| 2026-10-17 (L01) | Plan for lesson 02 (AssertJ) | Rewrite lab-01's failing assertions (`AssertionMessagesTest`, exception tests) in AssertJ, compare messages side by side; DN list/collection assertions; soft assertions vs `assertAll`; then migrate core tests and compare readability |
+
 ## Backlog (optional)
 
 | Tool | Status | Notes |
@@ -69,3 +82,4 @@ Append-only, newest at bottom. One entry per working session.
 | 2026-10-05 | 00 | Wrapper, project-scoped settings, parent POM (pinned plugins), core `Rdn`, javac `-Xlint:all` + `failOnWarning` gate, lab-00, `qa/check.sh` | Lesson 01 |
 | 2026-10-17 | 00 | Added LEARNING-PRINCIPLES.md (Victor, Senge); experiment-first template; lesson 00 "Try it yourself" (fail/pass commands, `-Werror` hides fall-through, Maven flow, jshell) | Lesson 01 |
 | 2026-10-17 | 01 | Naur theory building (THEORY.md, tool-theory section); DN parser + 67 tests; lab-01 (lifecycle flow, shared state vs seeds, assertion messages, exception traps, tables, tags); check.sh random order with seed, test totals, `[XX]` rows | Lesson 02 |
+| 2026-10-17 | — | Saved session knowledge before context compaction: open items in TRACKER, agent pitfalls in CLAUDE.md, jshell tip in lesson 00 | Lesson 02 |

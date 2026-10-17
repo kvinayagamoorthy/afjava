@@ -143,6 +143,9 @@ jshell> |  Exception java.lang.IllegalArgumentException: empty value for attribu
 |        at (#5:1)
 ```
 
+Tip: lines piped on stdin, as above, echo each value. Running a script file
+(`jshell -q file.jsh`) shows only exceptions, not the values.
+
 You can see the data (`cn=admin`, type lower-cased), the state (`equals` is true because the
 record compares normalised components), and where validation fails (`Rdn.java:23`). Python
 analog: `python -i` with the package on `PYTHONPATH`.

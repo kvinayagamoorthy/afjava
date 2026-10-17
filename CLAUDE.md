@@ -51,6 +51,24 @@ abstract; Peter Senge: learn by acting and seeing consequences within the learni
 - Lesson docs follow `docs/lessons/_TEMPLATE.md`. Include a Python analog where one exists
   (owner's Python setup: ruff, pylint, mypy, bandit, radon, cohesion, tach, vulture, pytest).
 
+## Agent working notes (pitfalls met so far)
+
+- **Commit before break-it experiments.** `git checkout -- <file>` as an undo also discards
+  uncommitted work in that file (this wiped `Rdn.java` once in lesson 01). Untracked files are
+  not restored by it at all.
+- **Write Java/test files with the Write tool, not shell heredocs or Python string edits.**
+  Backslash escaping got lost twice (`\\;` in a CSV text block, a `sed` pattern for `Rdn`).
+  Then compile and look at the exact line if `illegal escape character` appears.
+- **Check `sed` actually matched** (grep the line afterwards) before trusting an experiment's
+  result; a no-op `sed` makes a break-it experiment silently pass.
+- **jshell:** piping lines on stdin echoes each value (`$2 ==> ...`); running a `.jsh` script
+  file with `-q` shows only exceptions.
+- **Don't run Maven with `-o` before new dependencies are downloaded** (fails with
+  "Cannot access central in offline mode").
+- **JUnit 6 quotes String arguments in display names**; don't add your own quotes around `{0}`.
+- The owner's global rules: caveman style only for chat; files, code, commits in normal
+  English; report changed file paths with one-line descriptions, no diffs.
+
 ## Layout
 
 - `pom.xml` — parent: versions, pluginManagement, profiles (`labs`; `full` added in later lessons)
