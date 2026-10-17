@@ -57,7 +57,7 @@ now_ms() { echo $(( $(date +%s%N) / 1000000 )); }
 # failed rows of the JUnit tree report ([XX] lines carry the test's display name and data).
 findings() {
     grep -E '^\[(ERROR|WARNING)\]|\[XX\]' "$1" \
-        | grep -vE 'Help 1|-e switch|-X switch|resume the build|mvn <args>|For more information|cwiki\.apache|^\[ERROR\] *$' \
+        | grep -vE 'Help 1|-e switch|-X switch|resume the build|mvn <args>|For more information|cwiki\.apache|dump files|^\[ERROR\] *$' \
         | sed "s#${REPO_ROOT}/##"
 }
 

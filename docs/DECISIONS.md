@@ -59,3 +59,44 @@ bottom. Format: context → decision → consequence.
   comes after the experiments. Template reordered accordingly.
 - **Consequence:** Each experiment command is run before it is documented. Lesson 00
   retrofitted (11 experiments, incl. the `-Werror` hidden-warning surprise and jshell).
+
+## D008 — JUnit 6 instead of JUnit 5 (2026-10-17)
+
+- **Context:** Plan said JUnit 5. Current release on Maven Central is 6.1.3. JUnit 6 keeps the
+  Jupiter API, unifies version numbers, needs Java 17+ (we use 21).
+- **Decision:** `junit-bom` 6.1.3. Lessons teach the Jupiter API, valid for JUnit 5 code too.
+- **Consequence:** One version property for every JUnit artifact.
+
+## D009 — Surefire tree reporter, test stdout kept (2026-10-17)
+
+- **Context:** Default Surefire output shows only class totals; the data rows of parameterized
+  tests are invisible. Seeing the data is a learning principle.
+- **Decision:** Third-party `me.fabriciorby:maven-surefire-junit5-tree-reporter` 2.0.0 as a
+  Surefire plugin dependency. Its suggested `consoleOutputReporter disable` is **not** used,
+  because it hid test stdout (lifecycle flow prints).
+- **Consequence:** One extra third-party build dependency (to be covered by
+  Dependency-Check in lesson 15). `check.sh` prints `[XX]` rows on failure.
+
+## D010 — Random test order with a printed seed (2026-10-17)
+
+- **Context:** Lab 01 showed static shared state passing in 1 of 8 orders. JUnit's default order
+  is fixed but unspecified, so order-dependence can hide for months.
+- **Decision:** `qa/check.sh` shuffles class and method order on every run and prints the seed;
+  `AFJAVA_TEST_SEED=<n>` replays it. Tests needing an order declare `@TestMethodOrder`.
+- **Consequence:** Hidden coupling between tests surfaces early and reproducibly.
+
+## D011 — Labs are self-contained (2026-10-17)
+
+- **Context:** `--labs` rebuilt and retested core (11.8 s total).
+- **Decision:** Labs don't depend on `afjava-core`; the labs step uses `-pl '!afjava-core'`.
+- **Consequence:** Each lab shows its tool in isolation; labs step no longer duplicates core.
+  Revisit if a later lab (e.g. ArchUnit, PIT) needs core classes.
+
+## D012 — Program theory written down (Naur) (2026-10-17)
+
+- **Context:** Owner wants the theory behind what we build, not just the code.
+  `programming-as-theory-building` skill available.
+- **Decision:** Skill used for every code change. `docs/THEORY.md` records the domain theory
+  (world rule → code, invariants, boundary, proof). Each lesson has a "Theory of the tool"
+  table with the five questions, tied to experiments.
+- **Consequence:** Domain changes are not done until THEORY.md says why.

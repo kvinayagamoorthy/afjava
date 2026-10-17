@@ -4,11 +4,11 @@ Legend: ⬜ not started · 🟡 in progress · ✅ done · ⏸ deferred · ❌ d
 
 ## Current focus
 
-- **Lesson:** 01 — JUnit 5
+- **Lesson:** 02 — AssertJ
 - **Status:** ⬜ not started
-- **Next step:** Add JUnit 5 BOM to parent POM; write `RdnTest`; grow domain with a
-  `DistinguishedName` parser and test it with `@ParameterizedTest`, `@Nested`, `assertThrows`.
-  Create `labs/lab-01-junit5` (lifecycle, dynamic tests, tags, unit vs component split).
+- **Next step:** Add AssertJ to the BOM-managed test deps; lab-02 rewrites the failing
+  assertion demos of lab-01 in AssertJ and compares messages side by side (collections, DN
+  lists, exceptions, soft assertions). Then migrate core tests and compare readability.
 - **Blockers:** none
 
 > Update this block at the end of every session. It is the single resume point.
@@ -18,7 +18,7 @@ Legend: ⬜ not started · 🟡 in progress · ✅ done · ⏸ deferred · ❌ d
 | # | Tool | Status | Version | Lesson doc | Lab module | Gate | Tier | Time added | Done on |
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | Foundation (wrapper, parent POM, javac lint, check.sh) | ✅ | Maven 3.9.16, compiler 3.16.0 | [00](lessons/00-foundation.md) | lab-00-javac-lint | fail | T1 | 0 (≈1.5 s total) | 2026-10-05 |
-| 01 | JUnit 5 | ⬜ | | | | | | | |
+| 01 | JUnit (Jupiter; JUnit 6) | ✅ | JUnit 6.1.3, Surefire 3.6.0, tree-reporter 2.0.0 | [01](lessons/01-junit.md) | lab-01-junit5 | fail | T1 | +2.7 s (build step 4.2 s) | 2026-10-17 |
 | 02 | AssertJ | ⬜ | | | | | | | |
 | 03 | Mockito | ⬜ | | | | | | | |
 | 04 | JaCoCo | ⬜ | | | | | | | |
@@ -68,3 +68,4 @@ Append-only, newest at bottom. One entry per working session.
 | 2026-10-05 | — | Created plan, tracker, lesson template, CLAUDE.md, README, .gitignore | Start lesson 00 |
 | 2026-10-05 | 00 | Wrapper, project-scoped settings, parent POM (pinned plugins), core `Rdn`, javac `-Xlint:all` + `failOnWarning` gate, lab-00, `qa/check.sh` | Lesson 01 |
 | 2026-10-17 | 00 | Added LEARNING-PRINCIPLES.md (Victor, Senge); experiment-first template; lesson 00 "Try it yourself" (fail/pass commands, `-Werror` hides fall-through, Maven flow, jshell) | Lesson 01 |
+| 2026-10-17 | 01 | Naur theory building (THEORY.md, tool-theory section); DN parser + 67 tests; lab-01 (lifecycle flow, shared state vs seeds, assertion messages, exception traps, tables, tags); check.sh random order with seed, test totals, `[XX]` rows | Lesson 02 |
