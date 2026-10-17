@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tags select which tests run, like pytest markers ({@code -m}). The "component" test simulates
- * a slow call to a real LDAP server; select or skip it from the command line with
- * {@code -Dgroups=component} or {@code -DexcludedGroups=component}.
+ * a slow call to a real LDAP server. Run only it with {@code -Dgroups=component}; run only the
+ * fast one with {@code -Dgroups=unit}. (This lab's pom binds Surefire's {@code excludedGroups} to
+ * {@code lab.excludedGroups}, so {@code -DexcludedGroups=...} has no effect here.)
  */
 class TaggedTest {
 

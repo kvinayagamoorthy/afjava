@@ -35,6 +35,17 @@ done
 # -B batch mode (no colour codes in logs), -ntp no download progress noise.
 MVN=(./mvnw -B -ntp)
 
+# Random test order (classes and methods) with a printed, reusable seed. A test that only
+# passes in one order depends on state left behind by another test; randomness exposes that.
+# Reproduce a failing order with: AFJAVA_TEST_SEED=<seed> ./qa/check.sh
+TEST_SEED="${AFJAVA_TEST_SEED:-$RANDOM}"
+TEST_ORDER=(
+    "-Djunit.jupiter.testclass.order.default=org.junit.jupiter.api.ClassOrderer\$Random"
+    "-Djunit.jupiter.testmethod.order.default=org.junit.jupiter.api.MethodOrderer\$Random"
+    "-Djunit.jupiter.execution.order.random.seed=${TEST_SEED}"
+)
+echo "Test order seed: ${TEST_SEED}  (reproduce with AFJAVA_TEST_SEED=${TEST_SEED} ./qa/check.sh)"
+
 summary_file=$(mktemp)
 log_dir=$(mktemp -d)
 trap 'rm -f "$summary_file"; rm -rf "$log_dir"' EXIT
@@ -42,9 +53,10 @@ overall=0
 
 now_ms() { echo $(( $(date +%s%N) / 1000000 )); }
 
-# findings <log>: ERROR/WARNING lines minus Maven's generic help boilerplate.
+# findings <log>: ERROR/WARNING lines minus Maven's generic help boilerplate, plus the
+# failed rows of the JUnit tree report ([XX] lines carry the test's display name and data).
 findings() {
-    grep -E '^\[(ERROR|WARNING)\]' "$1" \
+    grep -E '^\[(ERROR|WARNING)\]|\[XX\]' "$1" \
         | grep -vE 'Help 1|-e switch|-X switch|resume the build|mvn <args>|For more information|cwiki\.apache|^\[ERROR\] *$' \
         | sed "s#${REPO_ROOT}/##"
 }
@@ -79,7 +91,7 @@ run_step() {
 
 # ── T1: fast tier ─────────────────────────────────────────────────────────────
 # compile (javac -Xlint:all -Werror) + unit tests (JUnit) + package, every default-build module.
-run_step "build: javac lint + unit tests" "${MVN[@]}" clean verify
+run_step "build: javac lint + unit tests" "${MVN[@]}" "${TEST_ORDER[@]}" clean verify
 
 # ── T2: slow tier ─────────────────────────────────────────────────────────────
 if [ "$run_full" -eq 1 ]; then
@@ -87,8 +99,9 @@ if [ "$run_full" -eq 1 ]; then
 fi
 
 # ── Labs: intentionally flawed code must still build (warnings expected) ─────
+# Labs are self-contained, so core is excluded here (already built and tested above).
 if [ "$run_labs" -eq 1 ]; then
-    run_step "labs: build" "${MVN[@]}" -Plabs clean verify
+    run_step "labs: build" "${MVN[@]}" "${TEST_ORDER[@]}" -Plabs -pl '!afjava-core' clean verify
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
